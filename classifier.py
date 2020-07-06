@@ -1,20 +1,24 @@
 from sklearn.ensemble import RandomForestClassifier  
+from sklearn import svm
 import constant
 import reader
 
 def classification_rate(features):
-
+    
     train_data=reader.read_train_data()
     test_data=reader.read_test_data()
-
+    
     X_train = get_X(train_data,features)
     y_train= get_y(train_data)
 
     X_test=get_X(test_data,features)
     y_test=get_y(test_data)
+    
+    SVM = svm.SVC(decision_function_shape="ovo",gamma="scale").fit(X_train, y_train)  
+    return SVM.score(X_test, y_test)
 
-    RF = RandomForestClassifier(constant.num_estimators_RF).fit(X_train, y_train)   
-    return RF.score(X_test, y_test)
+    #RF = RandomForestClassifier(constant.num_estimators_RF).fit(X_train, y_train)   
+    #return RF.score(X_test, y_test)
 
 def get_X(df,features):
     if features==None:
