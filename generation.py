@@ -1,49 +1,66 @@
-
 import constant
 import math
 from individual import Individual
-from classifer import classification_rate
+from classifier import classification_rate
 from selector import select_individual
 from crossover import crossover
 from mutation import mutate
+import random
 
 def next_generation(previous_generation):
     next_generation=[]
     if(previous_generation==None):
-        next_generation.fitness=0
-        for i in range(constant.mew):
-            individual=random_individual()
+        for _ in range(constant.mew):
+            individual=Individual()
+            #print(str(individual.features)+"  fitness: "+str(individual.fitness))
             next_generation.append(individual)
-            next_generation.fitness+=individual.fitness
         return next_generation
 
-    # assuming that the size of population stays same after every generation
-    mating_pool=[]
-    for i in range(constant.pooling_mate_size):
-        mating_pool.append(select_individual(previous_generation))
-        # best individuals from previous generation are passed on the next generateion
-        next_generation.append(mating_pool[i])
+    #individuls retained from previous population
+    individuals_to_retain=best_individuals(previous_generation,constant.retain_previous)
+    for individual in individuals_to_retain:
+        #print("retained"+str(individual.features)+"  fitness: "+str(individual.fitness))
+        next_generation.append(individual)
+     
+    #crossover population
+    #mating_pool=[]
+    #for _ in range(constant.mating_pool_size):
+        #to_mate=select_individual(previous_generation)
+        #mating_pool.append(to_mate)
+        
 
-    for i in range(constant.D-constant.pooling_mate_size):
+    for _ in range(constant.mew- constant.retain_previous):
         male=select_individual(previous_generation)
+        #print("male selected for mating"+str(male.features)+"  fitness: "+str(male.fitness))
         female=select_individual(previous_generation)
+        #print("female selected for mating"+str(female.features)+"  fitness: "+str(female.fitness))
         child=crossover(male,female)
+        #print("after crossover"+str(child.features)+"  fitness: "+str(child.fitness))
         mutated_child=mutate(child)
+        #print("after mutation"+str(mutated_child.features)+"  fitness: "+str(mutated_child.fitness))
         next_generation.append(mutated_child)
-
     return next_generation
 
-def random_individual():
-    all_features=[]
-    features=[]
-    # for random permutation
-    for i in range(constant.D):
-        all_features.append(i)
-    for i in range(constant.d):
-        index=math.floor(random.random()*len(all_features))
-        feature=all_features[index]
-        individual.append(feature)
-        all_features.remove(feature)
+def best_individual(population):
+    fitness=0
+    best=None
+    for individual in population:
+        if individual.fitness>fitness:
+            fitness=individual.fitness
+            best=individual
+    return best
 
-    individual=Individual(features,classification_rate(features))
-    return individual
+def average_fitness(population):
+    fitness=0
+    for individual in population:
+        fitness+=individual.fitness
+    return fitness/len(population)
+
+def best_individuals(initial_population,num):
+    population=initial_population.copy()
+    best_individuals=[]
+    for _ in range(num):
+        individual=best_individual(population)
+        best_individuals.append(individual)
+        population.remove(individual)
+    return best_individuals

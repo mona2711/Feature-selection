@@ -3,20 +3,12 @@ import constant
 from classifier import classification_rate
 def mutate(individual):
     # enforced mutation, as described by the research paper is used
-    features=individual.features
-    missing_features=individual.missing_features
     # mutation with probability as specified in constant file
-    if(random.random()<constant.mutation_prob):
-        index=random.randrange(constant.d)
-        #deleting by index
-        features.del(index)
 
-        index=random.randrange(constant.D-constant.d)
-        features.append(missing_features[index])
+    for _ in range(constant.num_features_mutated):
+        individual.remove_random_feature()
+        missing_features=individual.get_missing_features()
+        index=random.randrange(len(missing_features))
+        individual.add_feature(missing_features[index])
 
-        individual.mutate(features,classification_rate(features))
-
-    else:
-        pass
-
-    return
+    return individual

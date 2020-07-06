@@ -1,27 +1,42 @@
 import classifier
 import random
+import constant
+import math
 
 def select_individual(generation):
-    wheel=make_wheel(generation)
-    individual_selected=rotate_wheel(wheel)
+    wheel_partitions,circumference=make_wheel(generation)
+    individual_selected=rotate_wheel(wheel_partitions,circumference)
     return generation[individual_selected]
 
-def rotate_wheel(wheel):
-    stop_point=random.randrange(wheel.circumference)
-    wheel_covered=0
-    final_partition=0
-    for i in range(wheel.partitions):
-        # adding partition of a wheel
-        wheel_covered+=wheel[i]
-        if(stop_point<=wheel_covered):
-            final_partition=i
-            break
-    return final_partition
+def rotate_wheel(wheel_partitions,circumference):
+    stop_point=random.random()*circumference
+    #print("stop"+str(stop_point))
+    circumference_covered=0
+    for partition in range(len(wheel_partitions)):
+        circumference_covered+=wheel_partitions[partition]
+        if(stop_point<=circumference_covered):
+            return partition
+    return None
 
 def make_wheel(generation):
-    wheel=[]
+    wheel_partitions=[]
+    circumference=0
     for individual in generation:
-        wheel.append(individual.fitness)
-    wheel.circumference=generation.fitness
-    wheel.partitions=len(generation)
-    return wheel
+        wheel_partitions.append(individual.fitness)
+        circumference+=individual.fitness
+    return wheel_partitions,circumference
+
+def select_random_features():
+    all_features=[]
+    features=[]
+    # for random permutation
+    for i in range(constant.D):
+        all_features.append(i)
+
+    for i in range(constant.d):
+        index=math.floor(random.random()*len(all_features))
+        feature=all_features[index]
+        features.append(feature)
+        all_features.remove(feature)
+
+    return features 
