@@ -28,7 +28,10 @@ async def schedule_workers(urls,generation,start):
 
 async def run(generation):
     urls = [
-            'http://18.218.193.96:80/search'
+            'http://3.14.127.106:80/search',
+            'http://18.224.64.115:80/search',
+            'http://18.191.135.220:80/search',
+            'http://18.218.120.22:80/search'
         ]
     i=0
     while(i<len(generation)):
