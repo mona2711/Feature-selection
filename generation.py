@@ -12,6 +12,7 @@ def next_generation(previous_generation):
     if(previous_generation==None):
         for _ in range(constant.mew):
             individual=Individual()
+            #individual.set_fitness(classification_rate(individual.features)
             #print(str(individual.features)+"  fitness: "+str(individual.fitness))
             next_generation.append(individual)
         return next_generation

@@ -2,6 +2,7 @@ import constant
 from generation import next_generation
 from generation import best_individual
 from generation import average_fitness
+from fitness import compute_fitness
 def main():
     prev_gen=None
     average_file = open("average.txt", "a")
@@ -9,6 +10,7 @@ def main():
     features_file=open("features.txt","a")
     for i in range(constant.num_iterations):
         next_gen=next_generation(prev_gen)
+        compute_fitness(next_gen)
         print("best individual's fitness in "+str(i)+ "th generation : " + str(best_individual(next_gen).fitness))
         best_file.write(str(best_individual(next_gen).fitness)+"\n")
         print(str(best_individual(next_gen).features))

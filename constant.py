@@ -7,14 +7,12 @@ D=617
 # size of feature subset (according to research paper)
 d=20
 # population size (represented by mew in research paper)
-mew=10
-# number of individuals selected from any generation for mating
-#mating_pool_size=5
+mew=50
 # number of individuals to retain from previous generation
 retain_previous=2
 # number of genes changes per mutation
 num_features_mutated=1
 # number of iterations
-num_iterations=10
+num_iterations=20
 
 scale_fitness=1
