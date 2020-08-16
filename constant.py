@@ -7,7 +7,7 @@ D=617
 # size of feature subset (according to research paper)
 d=20
 # population size (represented by mew in research paper)
-mew=50
+mew=10
 # number of individuals to retain from previous generation
 retain_previous=2
 # number of genes changes per mutation
